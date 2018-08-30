@@ -2,3 +2,10 @@
 .idea
 *iml
 .DS_Store
+
+# gradle
+.gradle
+build
+
+# log
+logs
