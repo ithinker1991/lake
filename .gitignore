@@ -9,3 +9,6 @@ build
 
 # log
 logs
+
+# complied
+out/
