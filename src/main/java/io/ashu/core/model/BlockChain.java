@@ -1,10 +1,15 @@
 package io.ashu.core.model;
 
 
+import db.HashMapSource;
+import db.Source;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class BlockChain {
+
+    Source blockStore = new HashMapSource();
 
     public BlockChain() {
         blocks = new ArrayList<>();
@@ -24,6 +29,7 @@ public class BlockChain {
 
     public void pushBlock(Block block) {
         blocks.add(block);
+        blockStore.put(block.getHash(), block.getHash());
 
         System.out.println("Push block: " + block);
     }

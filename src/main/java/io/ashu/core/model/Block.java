@@ -33,6 +33,10 @@ public class Block {
                     '}';
         }
     }
+
+    public byte[] getHash() {
+        return head.hash;
+    }
     // head
     private Head head;
 
