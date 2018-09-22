@@ -1,44 +1,32 @@
 package io.ashu.core.model;
 
-import java.util.Arrays;
 import java.util.List;
+
+import com.google.common.primitives.Longs;
+import io.ashu.crypto.ByteUtil;
+import io.ashu.crypto.HashUtil;
 import org.spongycastle.util.encoders.Hex;
 
+
 public class Block {
-    public Block(Head head, List<Transaction> transactions) {
-        this.head = head;
-        this.transactions = transactions;
+    private long index;
+    private long timestamp;
+    private byte[] hash;
+    private byte[] parentHash = new byte[0];
+
+    public Block(long index) {
+        this.index = index;
+        timestamp = System.currentTimeMillis();
+        hash = computeHash();
     }
 
-    public static class Head {
-        private long index;
-        private long timestamp;
-        private byte[] hash;
-        private byte[] parentHash;
+    private byte[] computeHash() {
+        byte[] indexBytes = Longs.toByteArray(index);
+        byte[] tsBytes = Longs.toByteArray(timestamp);
+        byte[] blockBytes = ByteUtil.merge(indexBytes, tsBytes, parentHash);
 
-        public Head(long index, long timestamp, byte[] hash, byte[] parentHash) {
-            this.index = index;
-            this.timestamp = timestamp;
-            this.hash = hash;
-            this.parentHash = parentHash;
-        }
-
-        @Override
-        public String toString() {
-            return "Head{" +
-                    "index=" + index +
-                    ", timestamp=" + timestamp +
-                    ", hash=" + Hex.toHexString(hash) +
-                    ", parentHash=" + Hex.toHexString(parentHash) +
-                    '}';
-        }
+        return HashUtil.sha3(blockBytes);
     }
-
-    public byte[] getHash() {
-        return head.hash;
-    }
-    // head
-    private Head head;
 
     // data
     private List<Transaction> transactions;
@@ -50,7 +38,10 @@ public class Block {
     @Override
     public String toString() {
         return "Block{" +
-                "head=" + head +
+                "index=" + index +
+                ", timestamp=" + timestamp +
+                ", hash=" + Hex.toHexString(hash) +
+                ", parentHash=" + Hex.toHexString(parentHash) +
                 ", transactions=" + transactions +
                 '}';
     }

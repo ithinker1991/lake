@@ -1,6 +1,8 @@
 package io.ashu;
 
-public class util {
+public class Util {
+
+
 
 
 }
