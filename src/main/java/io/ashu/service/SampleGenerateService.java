@@ -1,9 +1,8 @@
 package io.ashu.service;
 
 import io.ashu.core.model.Block;
-import org.spongycastle.util.encoders.Hex;
 
-public class SampleGenerateService implements IGenerateBlockService {
+public class SampleGenerateService extends GenerateBlockService {
     public SampleGenerateService() {
         firstBlockHash = "ashu".getBytes();
     }

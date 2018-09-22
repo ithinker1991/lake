@@ -1,4 +1,4 @@
-package db;
+package io.ashu.db;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +14,11 @@ public class HashMapSource implements Source{
     @Override
     public void put(byte[] key, byte[] data) {
         map.put(key,data);
+
+    }
+
+    @Override
+    public void delete(byte[] key) {
 
     }
 

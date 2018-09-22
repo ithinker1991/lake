@@ -2,14 +2,14 @@ package io.ashu;
 
 import io.ashu.core.model.BlockChain;
 import io.ashu.service.BlockChainService;
-import io.ashu.service.IGenerateBlockService;
+import io.ashu.service.GenerateBlockService;
 import io.ashu.service.SampleGenerateService;
 
 public class Main {
 
     public static void main(String[] args) {
         // 定时产块即为共识
-        IGenerateBlockService generateBlockService = new SampleGenerateService();
+        GenerateBlockService generateBlockService = new SampleGenerateService();
 
         // model 即 DB
         BlockChain blockChain = new BlockChain();

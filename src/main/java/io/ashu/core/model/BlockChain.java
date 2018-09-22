@@ -1,15 +1,19 @@
 package io.ashu.core.model;
 
 
-import db.HashMapSource;
-import db.Source;
+import io.ashu.db.HashMapSource;
+import io.ashu.db.Source;
+import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class BlockChain {
     private Block genesisBlock;
     private Source blockStore;
+    @Getter
+    private List<Transaction> pendingTransactions;
     private long headIndex = -1;
 
     public BlockChain(Source blockStore) {
@@ -20,7 +24,7 @@ public class BlockChain {
 
     public BlockChain() {
         blocks = new ArrayList<>();
-
+        pendingTransactions = new LinkedList<>();
     }
 
     private List<Block> blocks;
@@ -33,7 +37,7 @@ public class BlockChain {
         return blocks.size();
     }
 
-    public void pushBlock(Block block) {
+    public synchronized void pushBlock(Block block) {
         blocks.add(block);
 //        blockStore.put(block.getHash(), block.getHash());
         System.out.println("Push block: " + block);
@@ -50,5 +54,9 @@ public class BlockChain {
             System.out.println(blocks.get(i));
         }
         System.out.println("-----------------------------");
+    }
+
+    public void clearPendingTransactions() {
+        this.pendingTransactions.clear();
     }
 }

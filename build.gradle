@@ -17,4 +17,6 @@ dependencies {
 
     compile group: 'com.google.guava', name: 'guava', version: '24.1-jre'
 
+    compile "org.projectlombok:lombok:1.16.18"
+
 }

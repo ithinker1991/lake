@@ -3,14 +3,12 @@ package io.ashu.service;
 import io.ashu.core.model.Block;
 import io.ashu.core.model.BlockChain;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class BlockChainService  implements  IService{
-    private IGenerateBlockService generateBlockService;
+    private GenerateBlockService generateBlockService;
     private BlockChain blockChain;
     private volatile boolean shouldExit;
 
-    public BlockChainService(IGenerateBlockService generateBlockService, BlockChain blockChain){
+    public BlockChainService(GenerateBlockService generateBlockService, BlockChain blockChain){
         this.generateBlockService = generateBlockService;
         this.blockChain = blockChain;
         shouldExit = false;
