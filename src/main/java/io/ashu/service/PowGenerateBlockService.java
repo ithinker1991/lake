@@ -1,38 +1,39 @@
 package io.ashu.service;
 
 import com.google.common.base.Strings;
-import com.sun.deploy.util.StringUtils;
 import io.ashu.core.model.Block;
 import io.ashu.core.model.BlockChain;
 import io.ashu.core.model.Transaction;
+import lombok.Setter;
 
-import java.math.BigInteger;
 import java.util.List;
 
 public class PowGenerateBlockService extends AbstractGenerateBlockService {
-    private int difficity;
-    private String hashPrefix;
+    @Setter
+    private int difficulty;
+
     public PowGenerateBlockService(BlockChain blockChain) {
         super(blockChain);
-        difficity = 4;
+        difficulty = 4;
     }
 
-    public String getHashPrefix() {
-        hashPrefix = Strings.repeat("0", difficity);
-        return hashPrefix;
+    private String getHashPrefix() {
+        return Strings.repeat("0", difficulty);
     }
 
     @Override
     public Block generateBlock() {
         long headIndex = getBlockChain().getHeadIndex();
+        Block parentBlock = getBlockChain().getHeadBlock();
         List<Transaction> transactionList = getBlockChain().getPendingTransactions();
 
         Block block = new Block(headIndex + 1);
         block.addTransactions(transactionList);
+        block.setParentHash(parentBlock.getHash());
 
         for (long nonce = 0; nonce < Long.MAX_VALUE; nonce++) {
             block.setNonce(nonce);
-            if (satficgenerate(block)) {
+            if (matchRule(block)) {
                 break;
             }
         }
@@ -47,12 +48,7 @@ public class PowGenerateBlockService extends AbstractGenerateBlockService {
         return true;
     }
 
-    public boolean satficgenerate(Block block) {
-
-//        System.out.println(new BigInteger(1, block.getHash()).toString(2));
-//        System.out.println( new BigInteger(1, block.getHash()).toString(2));
+    private boolean matchRule(Block block) {
         return block.getBlockId().startsWith(getHashPrefix());
-//        return new BigInteger(1, block.getHash()).toString(2).substring(1).startsWith(getHashPrefix());
     }
-
 }

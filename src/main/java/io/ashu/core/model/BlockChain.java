@@ -20,11 +20,13 @@ public class BlockChain {
         this.blockStore = blockStore;
         this.blocks = new ArrayList<>();
         headIndex = 0;
+
     }
 
-    public BlockChain() {
+    public BlockChain(Block genesisBlock) {
         blocks = new ArrayList<>();
         pendingTransactions = new LinkedList<>();
+        pushBlock(genesisBlock);
     }
 
     private List<Block> blocks;
@@ -59,4 +61,5 @@ public class BlockChain {
     public void clearPendingTransactions() {
         this.pendingTransactions.clear();
     }
+
 }

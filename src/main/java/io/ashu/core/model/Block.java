@@ -16,6 +16,8 @@ public class Block {
     private long index;
     private long timestamp;
     private byte[] hash;
+    @Setter
+    @Getter
     private byte[] parentHash = new byte[0];
     private long nonce;
 
@@ -32,6 +34,12 @@ public class Block {
         this.index = index;
         timestamp = System.currentTimeMillis();
         transactions = new ArrayList<>();
+    }
+
+    public Block(long index, long timestamp, byte[] parentHash) {
+        this.index = index;
+        this.timestamp = timestamp;
+        this.parentHash = parentHash;
     }
 
     private void computeHash() {
@@ -77,10 +85,14 @@ public class Block {
         return "Block{" +
                 "index=" + index +
                 ", timestamp=" + timestamp +
-                ", hash=" + Hex.toHexString(hash) +
+                ", hash=" + Hex.toHexString(getHash()) +
                 ", parentHash=" + Hex.toHexString(parentHash) +
                 ", transactions=" + transactions +
                 ", nonce=" + nonce +
                 '}';
+    }
+
+    public static Block getGenesisBlock() {
+        return new Block(0, 0, "000000000".getBytes());
     }
 }

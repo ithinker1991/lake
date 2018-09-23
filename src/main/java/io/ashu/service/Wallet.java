@@ -1,4 +1,6 @@
 package io.ashu.service;
 
-public class Wallet {
+public interface Wallet {
+
+    void broadcastTransaction();
 }
