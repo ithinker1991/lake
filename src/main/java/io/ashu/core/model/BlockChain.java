@@ -1,15 +1,20 @@
 package io.ashu.core.model;
 
-
-import io.ashu.db.HashMapSource;
+import io.ashu.db.LevelDBSource;
 import io.ashu.db.Source;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BlockChain {
+public class BlockChain implements Serializable {
     private Block genesisBlock;
     private Source blockStore;
     @Getter
@@ -25,6 +30,7 @@ public class BlockChain {
 
     public BlockChain(Block genesisBlock) {
         blocks = new ArrayList<>();
+        blockStore = new LevelDBSource("block");
         pendingTransactions = new LinkedList<>();
         pushBlock(genesisBlock);
     }
@@ -41,7 +47,7 @@ public class BlockChain {
 
     public synchronized void pushBlock(Block block) {
         blocks.add(block);
-//        blockStore.put(block.getHash(), block.getHash());
+//        blockStore.put(block.getHash(), block.);
         System.out.println("Push block: " + block);
     }
 
@@ -54,8 +60,27 @@ public class BlockChain {
         System.out.println("----------- block ------------");
         for (int i = 0; i < blocks.size(); i++) {
             System.out.println(blocks.get(i));
+
         }
         System.out.println("-----------------------------");
+    }
+
+    private void put(Block block) throws IOException {
+      ObjectOutputStream oos = null;
+      ByteArrayOutputStream bos = null;
+
+      byte[] data = null;
+      try {
+        bos = new ByteArrayOutputStream();
+        oos = new ObjectOutputStream(bos);
+        oos.writeObject(block);
+        data = bos.toByteArray();
+      } finally {
+        bos.close();
+        oos.close();
+      }
+      blocks.add(block);
+      blockStore.put(block.getHash(), data);
     }
 
     public void clearPendingTransactions() {

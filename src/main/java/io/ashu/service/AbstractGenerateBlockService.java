@@ -5,15 +5,16 @@ import io.ashu.core.model.BlockChain;
 import lombok.Getter;
 
 public abstract class AbstractGenerateBlockService extends GenerateBlockService {
-    protected volatile boolean shouldExit = false;
+    private volatile boolean shouldExit = false;
     private Thread generateThread;
+
     @Getter
     private BlockChain blockChain;
 
     public AbstractGenerateBlockService(BlockChain blockChain) {
         this.blockChain = blockChain;
         generateThread = new Thread(new GenerateLoop());
-        generateThread.setName("generate-thread");
+        generateThread.setName("generate-block-thread");
     }
 
     private class GenerateLoop implements Runnable {

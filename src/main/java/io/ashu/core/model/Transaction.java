@@ -1,21 +1,30 @@
 package io.ashu.core.model;
 
-public class Transaction {
+import lombok.Getter;
+
+public abstract class Transaction {
+    public static enum Type {
+        TRANSFER,
+
+    }
+
+    @Getter
+    private byte[] ownerAddress;
     private int type;
 
     public byte[] asBytes() {
         return data;
     }
     private byte[] data;
+    private byte[] signature;
 
-    public Transaction(String msg) {
-        this.data = msg.getBytes();
+    public Transaction(byte[] ownerAddress) {
+        this.ownerAddress = ownerAddress;
     }
 
-    @Override
-    public String toString() {
-        return "Transaction{" +
-                "type=" + type +
-                '}';
+    public Transaction() {
     }
+
+    public abstract void validate();
+    public abstract void excute();
 }

@@ -3,7 +3,7 @@ package io.ashu.db;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HashMapSource implements Source{
+public class HashMapSource implements Source<byte[], byte[]>{
 
     private Map<byte[], byte[]> map;
 

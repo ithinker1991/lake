@@ -1,8 +1,9 @@
 package io.ashu.db;
 
-public interface Source {
-    void put(byte[] key, byte[] data);
-    void delete(byte[] key);
-    byte[] get(byte[] key);
+public interface Source<K, V> {
+
+    void put(K k, V v);
+    void delete(K k);
+    V get(K k);
 
 }

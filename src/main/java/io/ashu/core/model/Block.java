@@ -13,6 +13,7 @@ import org.spongycastle.util.encoders.Hex;
 
 
 public class Block {
+    @Getter
     private long index;
     private long timestamp;
     private byte[] hash;
@@ -90,6 +91,10 @@ public class Block {
                 ", transactions=" + transactions +
                 ", nonce=" + nonce +
                 '}';
+    }
+
+    public void serialize() {
+
     }
 
     public static Block getGenesisBlock() {
