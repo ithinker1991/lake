@@ -20,6 +20,7 @@ public class LevelDBSource implements Source<byte[], byte[]> {
 
   public LevelDBSource(String name) {
     this.name = name;
+    init();
   }
 
 //  public

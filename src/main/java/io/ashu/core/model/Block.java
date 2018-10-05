@@ -1,5 +1,8 @@
 package io.ashu.core.model;
 
+import com.alibaba.fastjson.JSON;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -15,11 +18,13 @@ import org.spongycastle.util.encoders.Hex;
 public class Block {
     @Getter
     private long index;
+    @Getter
     private long timestamp;
     private byte[] hash;
     @Setter
     @Getter
     private byte[] parentHash = new byte[0];
+    @Getter
     private long nonce;
 
     public void setNonce(long nonce) {
@@ -93,8 +98,18 @@ public class Block {
                 '}';
     }
 
-    public void serialize() {
+    public byte[] serialize() {
+        String json = JSON.toJSONString(this);
+        return json.getBytes();
+    }
 
+    public static Block deserialize(byte[] data) {
+      try {
+        return JSON.parseObject(new String(data, "UTF-8"), Block.class);
+      } catch (UnsupportedEncodingException e) {
+        e.printStackTrace();
+      }
+      return  null;
     }
 
     public static Block getGenesisBlock() {
