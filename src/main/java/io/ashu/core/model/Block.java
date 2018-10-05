@@ -12,9 +12,10 @@ import io.ashu.crypto.ByteUtil;
 import io.ashu.crypto.HashUtil;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.spongycastle.util.encoders.Hex;
 
-
+@Slf4j
 public class Block {
     @Getter
     private long index;

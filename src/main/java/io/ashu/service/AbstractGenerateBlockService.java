@@ -14,7 +14,7 @@ public abstract class AbstractGenerateBlockService extends GenerateBlockService 
     public AbstractGenerateBlockService(BlockChain blockChain) {
         this.blockChain = blockChain;
         generateThread = new Thread(new GenerateLoop());
-        generateThread.setName("generate-block-thread");
+        generateThread.setName("gen-block-thread");
     }
 
     private class GenerateLoop implements Runnable {

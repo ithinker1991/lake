@@ -15,12 +15,17 @@ dependencies {
     compile "com.madgag.spongycastle:core:1.58.0.0"
     compile "com.madgag.spongycastle:prov:1.58.0.0"
 
+    // util
     compile group: 'com.google.guava', name: 'guava', version: '24.1-jre'
-
     compile "org.projectlombok:lombok:1.16.18"
     compile group: 'com.alibaba', name: 'fastjson', version: '1.2.44'
 
     // levelDB
     compile "org.iq80.leveldb:leveldb:0.7"
     compile group: "org.fusesource.leveldbjni", name: "leveldbjni-all", version: "1.8"
+
+    // log
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    compile group: 'org.slf4j', name: 'jcl-over-slf4j', version: '1.7.25'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
 }

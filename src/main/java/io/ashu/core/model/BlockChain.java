@@ -4,15 +4,14 @@ import io.ashu.db.store.BlockStore;
 import io.ashu.db.store.ChainStatsStore;
 import io.ashu.db.store.impl.SimpleBlockStore;
 import io.ashu.db.store.impl.SimpleChainStatsStore;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import lombok.Getter;
 
 import java.util.LinkedList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class BlockChain implements Serializable {
     private Block genesisBlock;
     private BlockStore blockStore;
@@ -22,14 +21,11 @@ public class BlockChain implements Serializable {
     private long headIndex = -1;
 
     public BlockChain(Block genesisBlock) {
-//        blocks = new ArrayList<>();
         blockStore = new SimpleBlockStore();
         statsStore = new SimpleChainStatsStore();
         pendingTransactions = new LinkedList<>();
 
-        if (statsStore.getHeadBlockIndex() > 1) {
-
-        } else {
+        if (statsStore.getHeadBlockIndex() < -1) {
           pushBlock(genesisBlock);
         }
     }
@@ -46,7 +42,9 @@ public class BlockChain implements Serializable {
     public synchronized void pushBlock(Block block) {
         blockStore.putBlock(block);
         statsStore.updateHeadBlockIndex(block.getIndex());
-        System.out.println("Push block: " + block);
+
+        log.info("Push block: " + block);
+
     }
 
     public long getHeadIndex() {
@@ -54,30 +52,12 @@ public class BlockChain implements Serializable {
     }
 
     public void print() {
-        System.out.println("----------- block ------------");
-        for (int i = 0; i <= statsStore.getHeadBlockIndex(); i++) {
-            System.out.println(blockStore.getBlockByIndex(i));
 
+      log.info("----------- block ------------");
+        for (long i = 0; i <= statsStore.getHeadBlockIndex(); i++) {
+          log.info(blockStore.getBlockByIndex(i).toString());
         }
-        System.out.println("-----------------------------");
-    }
-
-    private void put(Block block) throws IOException {
-      ObjectOutputStream oos = null;
-      ByteArrayOutputStream bos = null;
-
-      byte[] data = null;
-      try {
-        bos = new ByteArrayOutputStream();
-        oos = new ObjectOutputStream(bos);
-        oos.writeObject(block);
-        data = bos.toByteArray();
-      } finally {
-        bos.close();
-        oos.close();
-      }
-//      blocks.add(block);
-      blockStore.putBlock(block);
+        log.info("-----------------------------");
     }
 
     public void clearPendingTransactions() {
