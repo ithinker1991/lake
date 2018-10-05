@@ -25,7 +25,7 @@ public class BlockChain implements Serializable {
         statsStore = new SimpleChainStatsStore();
         pendingTransactions = new LinkedList<>();
 
-        if (statsStore.getHeadBlockIndex() < -1) {
+        if (statsStore.getHeadBlockIndex() <= -1) {
           pushBlock(genesisBlock);
         }
     }

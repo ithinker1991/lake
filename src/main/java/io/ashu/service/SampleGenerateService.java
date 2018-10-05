@@ -18,7 +18,9 @@ public class SampleGenerateService extends AbstractGenerateBlockService {
     }
 
     private Block createSequencedBlock(long index) {
-        return new Block(index);
+        Block block = new Block();
+        block.setIndex(index);
+        return block;
     }
 
 

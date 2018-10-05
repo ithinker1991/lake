@@ -27,9 +27,11 @@ public class PowGenerateBlockService extends AbstractGenerateBlockService {
         Block parentBlock = getBlockChain().getHeadBlock();
         List<Transaction> transactionList = getBlockChain().getPendingTransactions();
 
-        Block block = new Block(headIndex + 1);
+        Block block = new Block();
+        block.setIndex(headIndex + 1);
         block.addTransactions(transactionList);
         block.setParentHash(parentBlock.getHash());
+        block.setTimestamp(System.currentTimeMillis());
 
         for (long nonce = 0; nonce < Long.MAX_VALUE; nonce++) {
             block.setNonce(nonce);

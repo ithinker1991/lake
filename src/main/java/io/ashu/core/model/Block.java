@@ -18,15 +18,20 @@ import org.spongycastle.util.encoders.Hex;
 @Slf4j
 public class Block {
     @Getter
+    @Setter
     private long index;
     @Getter
+    @Setter
     private long timestamp;
+    @Setter
     private byte[] hash;
     @Setter
     @Getter
     private byte[] parentHash = new byte[0];
     @Getter
     private long nonce;
+
+    private List<Transaction> transactions = new ArrayList<>();
 
     public void setNonce(long nonce) {
         this.nonce = nonce;
@@ -37,17 +42,17 @@ public class Block {
 
     private String blockId;
 
-    public Block(long index) {
-        this.index = index;
-        timestamp = System.currentTimeMillis();
-        transactions = new ArrayList<>();
-    }
-
-    public Block(long index, long timestamp, byte[] parentHash) {
-        this.index = index;
-        this.timestamp = timestamp;
-        this.parentHash = parentHash;
-    }
+//    public Block(long index) {
+//        this.index = index;
+//        timestamp = System.currentTimeMillis();
+//        transactions = new ArrayList<>();
+//    }
+//
+//    public Block(long index, long timestamp, byte[] parentHash) {
+//        this.index = index;
+//        this.timestamp = timestamp;
+//        this.parentHash = parentHash;
+//    }
 
     private void computeHash() {
         byte[] indexBytes = Longs.toByteArray(index);
@@ -58,8 +63,7 @@ public class Block {
         hash = HashUtil.sha3(blockBytes);
     }
 
-    // data
-    private List<Transaction> transactions;
+
 
     public static String computeHash(Block block) {
         return null;
@@ -114,6 +118,11 @@ public class Block {
     }
 
     public static Block getGenesisBlock() {
-        return new Block(0, 0, "000000000".getBytes());
+      Block genesisBlock = new Block();
+      genesisBlock.setIndex(0);
+      genesisBlock.setNonce(100000);
+      genesisBlock.setParentHash("parent_hash".getBytes());
+      genesisBlock.setTimestamp(System.currentTimeMillis());
+      return genesisBlock;
     }
 }
