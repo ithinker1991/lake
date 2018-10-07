@@ -4,7 +4,7 @@ import io.ashu.core.model.Account;
 import io.ashu.core.model.Transaction;
 import java.util.concurrent.Future;
 
-public class AbstractWallet implements WalletCli {
+public class AbstractWallet implements Wallet {
   private byte[] address;
   private byte[] priKey;
 

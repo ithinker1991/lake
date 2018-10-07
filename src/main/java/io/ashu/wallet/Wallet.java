@@ -4,7 +4,7 @@ import io.ashu.core.model.Account;
 import io.ashu.core.model.Transaction;
 import java.util.concurrent.Future;
 
-public interface WalletCli {
+public interface Wallet {
   // API
   boolean submitTransaction(Transaction trx);
   Future<TransactionResult> callTransaction(Transaction trx);

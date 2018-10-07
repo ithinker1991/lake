@@ -1,10 +1,8 @@
 package io.ashu.db.store.impl;
 
-import static io.ashu.core.model.Block.deserialize;
 
 import com.google.common.primitives.Longs;
 import io.ashu.core.model.Block;
-import io.ashu.crypto.ByteUtil;
 import io.ashu.db.LevelDBSource;
 import io.ashu.db.store.BlockStore;
 

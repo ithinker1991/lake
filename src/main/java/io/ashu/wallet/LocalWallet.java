@@ -5,7 +5,7 @@ import io.ashu.core.model.Transaction;
 import io.ashu.facade.Lake;
 import java.util.concurrent.Future;
 
-public class LocalWallet implements WalletCli {
+public class LocalWallet implements Wallet {
 
   public LocalWallet(Lake Lake) {
 
