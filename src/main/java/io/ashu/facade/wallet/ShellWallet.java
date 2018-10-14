@@ -14,11 +14,6 @@ import org.springframework.stereotype.Service;
 
 @SpringBootApplication
 public class ShellWallet  {
-  @Getter
-  @Setter
-  private byte[] privKey;
-
-
   public static void main(String[] args) {
     SpringApplication.run(ShellWallet.class, args);
   }
@@ -45,9 +40,27 @@ class TransactionCommands {
   private final WalletService wallet;
   private final ConsoleService console;
 
+  @Getter
+  @Setter
+  private byte[] privateKey;
+  @Setter
+  private boolean login;
+
   public TransactionCommands(WalletService wallet, ConsoleService console) {
     this.wallet = wallet;
     this.console = console;
+  }
+
+  @ShellMethod("import-wallet privateKey")
+  public void importWallet(String priKey) {
+    setPrivateKey(Hex.decode(priKey));
+    setLogin(true);
+    console.write("Import wallet success");
+  }
+
+  @ShellMethod("send-coin receiver amount")
+  public void sendCoin(String toAddrss, long amount) {
+
   }
 
   @ShellMethod("queryAccount <id>")
@@ -56,22 +69,21 @@ class TransactionCommands {
     console.write(account.toString());
   }
 
-//  @Override
-//  public boolean submitTransaction(Transaction trx) {
-//    return false;
-//  }
-//
-//  @Override
-//  public Future<TransactionResult> callTransaction(Transaction trx) {
-//    return null;
-//  }
-//
-//  @Override
-//  public Account queryAccount(byte[] id) {
-//    return null;
-//  }
-//
-
-
 
 }
+//
+//@ShellComponent
+//class QueryCommands {
+//  private final WalletService wallet;
+//  private final ConsoleService console;
+//
+//  public QueryCommands(WalletService wallet, ConsoleService console) {
+//    this.wallet = wallet;
+//    this.console = console;
+//  }
+//  @ShellMethod("queryAccount <id>")
+//  public void queryAccount(String id) {
+//    Account account = wallet.queryAccount(Hex.decode(id));
+//    console.write(account.toString());
+//  }
+
