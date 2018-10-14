@@ -5,16 +5,13 @@ import lombok.Getter;
 public abstract class Transaction {
     public static enum Type {
         TRANSFER,
-
     }
 
     @Getter
     private byte[] ownerAddress;
     private int type;
 
-    public byte[] asBytes() {
-        return data;
-    }
+
     private byte[] data;
     private byte[] signature;
 
@@ -23,6 +20,10 @@ public abstract class Transaction {
     }
 
     public Transaction() {
+    }
+
+    public byte[] asBytes() {
+        return data;
     }
 
     public abstract void validate();

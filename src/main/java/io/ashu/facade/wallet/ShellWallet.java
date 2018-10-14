@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 @SpringBootApplication
 public class ShellWallet  {
   public static void main(String[] args) {
-
     SpringApplication.run(ShellWallet.class, args);
-    System.err.println("has been started");
-
   }
 }
 
