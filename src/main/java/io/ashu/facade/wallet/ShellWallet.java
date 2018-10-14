@@ -2,6 +2,9 @@ package io.ashu.facade.wallet;
 
 import io.ashu.core.model.Account;
 import java.io.PrintStream;
+import lombok.Getter;
+import lombok.Setter;
+import org.spongycastle.util.encoders.Hex;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.shell.standard.ShellComponent;
@@ -37,33 +40,55 @@ class TransactionCommands {
   private final WalletService wallet;
   private final ConsoleService console;
 
+  @Getter
+  @Setter
+  private byte[] privateKey;
+  @Setter
+  private boolean login;
+
   public TransactionCommands(WalletService wallet, ConsoleService console) {
     this.wallet = wallet;
     this.console = console;
   }
 
-  @ShellMethod("getaccount <id>")
-  public void getAccount(byte[] id) {
-    Account account = wallet.queryAccount(id);
-    console.write(account.toString());
+  @ShellMethod("import-wallet privateKey")
+  public void importWallet(String priKey) {
+    setPrivateKey(Hex.decode(priKey));
+    setLogin(true);
+    console.write("Import wallet success");
   }
 
-//  @Override
-//  public boolean submitTransaction(Transaction trx) {
-//    return false;
-//  }
-//
-//  @Override
-//  public Future<TransactionResult> callTransaction(Transaction trx) {
-//    return null;
-//  }
-//
-//  @Override
-//  public Account queryAccount(byte[] id) {
-//    return null;
-//  }
-//
+  @ShellMethod("send-coin receiver amount")
+  public void sendCoin(String toAddrss, long amount) {
+  }
 
+  @ShellMethod("queryAccount <id>")
+  public void queryAccount(String id) {
+//    Account account = wallet.queryAccount(Hex.decode(id));
+    Account account = wallet.queryAccount(id.getBytes());
+    if (account == null) {
+      console.write("No this account");
+    } else {
+      console.write(account.toString());
+    }
+
+  }
 
 
 }
+//
+//@ShellComponent
+//class QueryCommands {
+//  private final WalletService wallet;
+//  private final ConsoleService console;
+//
+//  public QueryCommands(WalletService wallet, ConsoleService console) {
+//    this.wallet = wallet;
+//    this.console = console;
+//  }
+//  @ShellMethod("queryAccount <id>")
+//  public void queryAccount(String id) {
+//    Account account = wallet.queryAccount(Hex.decode(id));
+//    console.write(account.toString());
+//  }
+

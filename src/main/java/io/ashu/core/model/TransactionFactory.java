@@ -1,15 +1,15 @@
 package io.ashu.core.model;
 
 
-import io.ashu.core.model.Transaction.Type;
-import io.ashu.core.model.transaction.SendCoinTransaction;
+import io.ashu.core.model.AbstractTransaction.Type;
+import io.ashu.core.model.transaction.TransferTransaction;
 
 public class TransactionFactory {
 
-  Transaction create(Type type, byte[] data) {
+  AbstractTransaction create(Type type, byte[] data) {
     switch (type) {
       case TRANSFER:
-        return new SendCoinTransaction(data);
+        return new TransferTransaction(data);
 
     }
 

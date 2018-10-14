@@ -1,9 +1,9 @@
 package io.ashu.service;
 
 import com.google.common.base.Strings;
+import io.ashu.core.model.AbstractTransaction;
 import io.ashu.core.model.Block;
 import io.ashu.core.model.BlockChain;
-import io.ashu.core.model.Transaction;
 import lombok.Setter;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class PowGenerateBlockService extends AbstractGenerateBlockService {
 
     public PowGenerateBlockService(BlockChain blockChain) {
         super(blockChain);
-        difficulty = 4;
+        difficulty = 5;
     }
 
     private String getHashPrefix() {
@@ -25,7 +25,7 @@ public class PowGenerateBlockService extends AbstractGenerateBlockService {
     public Block generateBlock() {
         long headIndex = getBlockChain().getHeadIndex();
         Block parentBlock = getBlockChain().getHeadBlock();
-        List<Transaction> transactionList = getBlockChain().getPendingTransactions();
+        List<AbstractTransaction> transactionList = getBlockChain().getPendingTransactions();
 
         Block block = new Block();
         block.setIndex(headIndex + 1);
@@ -41,7 +41,6 @@ public class PowGenerateBlockService extends AbstractGenerateBlockService {
         }
 
         getBlockChain().clearPendingTransactions();
-
         return block;
     }
 

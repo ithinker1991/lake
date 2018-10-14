@@ -5,7 +5,9 @@ import com.google.common.primitives.Longs;
 import io.ashu.core.model.Block;
 import io.ashu.db.LevelDBSource;
 import io.ashu.db.store.BlockStore;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SimpleBlockStore implements BlockStore {
 
   private LevelDBSource blockSource;

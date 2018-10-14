@@ -1,7 +1,7 @@
 package io.ashu.wallet;
 
 import io.ashu.core.model.Account;
-import io.ashu.core.model.Transaction;
+import io.ashu.core.model.AbstractTransaction;
 import java.util.concurrent.Future;
 
 public class AbstractWallet implements Wallet {
@@ -10,12 +10,12 @@ public class AbstractWallet implements Wallet {
 
 
   @Override
-  public boolean submitTransaction(Transaction tx) {
+  public boolean submitTransaction(AbstractTransaction tx) {
     return false;
   }
 
   @Override
-  public Future<TransactionResult> callTransaction(Transaction tx) {
+  public Future<TransactionResult> callTransaction(AbstractTransaction tx) {
     return null;
   }
 
