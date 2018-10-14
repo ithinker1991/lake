@@ -2,6 +2,9 @@ package io.ashu.facade.wallet;
 
 import io.ashu.core.model.Account;
 import java.io.PrintStream;
+import lombok.Getter;
+import lombok.Setter;
+import org.spongycastle.util.encoders.Hex;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.shell.standard.ShellComponent;
@@ -11,6 +14,11 @@ import org.springframework.stereotype.Service;
 
 @SpringBootApplication
 public class ShellWallet  {
+  @Getter
+  @Setter
+  private byte[] privKey;
+
+
   public static void main(String[] args) {
     SpringApplication.run(ShellWallet.class, args);
   }
@@ -42,9 +50,9 @@ class TransactionCommands {
     this.console = console;
   }
 
-  @ShellMethod("getaccount <id>")
-  public void getAccount(byte[] id) {
-    Account account = wallet.queryAccount(id);
+  @ShellMethod("queryAccount <id>")
+  public void queryAccount(String id) {
+    Account account = wallet.queryAccount(Hex.decode(id));
     console.write(account.toString());
   }
 

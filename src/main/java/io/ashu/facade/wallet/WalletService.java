@@ -10,9 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class WalletService implements Wallet {
 
-  private byte[] prikey;
-
-
   @Override
   public boolean submitTransaction(Transaction trx) {
     return false;

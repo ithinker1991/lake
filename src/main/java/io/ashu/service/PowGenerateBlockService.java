@@ -41,7 +41,6 @@ public class PowGenerateBlockService extends AbstractGenerateBlockService {
         }
 
         getBlockChain().clearPendingTransactions();
-
         return block;
     }
 
