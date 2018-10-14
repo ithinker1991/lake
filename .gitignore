@@ -9,6 +9,7 @@ build
 
 # log
 logs
+*.log
 
 # db
 db
