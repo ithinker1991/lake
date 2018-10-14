@@ -1,15 +1,17 @@
 package io.ashu.core.model;
 
 import com.alibaba.fastjson.JSON;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import io.ashu.core.model.transaction.GenesisTransaction;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.common.primitives.Longs;
 import io.ashu.crypto.ByteUtil;
 import io.ashu.crypto.HashUtil;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +33,7 @@ public class Block {
     @Getter
     private long nonce;
 
-    private List<Transaction> transactions = new ArrayList<>();
+    private List<AbstractTransaction> transactions = new ArrayList<>();
 
     public void setNonce(long nonce) {
         this.nonce = nonce;
@@ -82,25 +84,31 @@ public class Block {
         return blockId;
     }
 
-    public void addTransaction(Transaction trx) {
+    public void addTransaction(AbstractTransaction trx) {
         transactions.add(trx);
     }
 
-    public void addTransactions(Collection<Transaction> trxs) {
+    public void addTransactions(Collection<AbstractTransaction> trxs) {
         transactions.addAll(trxs);
     }
 
+    public void execute() {
+        for (AbstractTransaction tx : transactions) {
+            tx.validate();
+            tx.execute();
+        }
+    }
 
     @Override
     public String toString() {
         return "Block{" +
-                "index=" + index +
-                ", timestamp=" + timestamp +
-                ", hash=" + Hex.toHexString(getHash()) +
-                ", parentHash=" + Hex.toHexString(parentHash) +
-                ", transactions=" + transactions +
-                ", nonce=" + nonce +
-                '}';
+            "index=" + index +
+            ", timestamp=" + timestamp +
+            ", hash=" + Hex.toHexString(getHash()) +
+            ", parentHash=" + Hex.toHexString(parentHash) +
+            ", transactions=" + transactions +
+            ", nonce=" + nonce +
+            '}';
     }
 
     public byte[] serialize() {
@@ -109,20 +117,32 @@ public class Block {
     }
 
     public static Block deserialize(byte[] data) {
-      try {
-        return JSON.parseObject(new String(data, "UTF-8"), Block.class);
-      } catch (UnsupportedEncodingException e) {
-        e.printStackTrace();
-      }
-      return  null;
+        try {
+            return JSON.parseObject(new String(data, "UTF-8"), Block.class);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return  null;
     }
 
+
     public static Block getGenesisBlock() {
-      Block genesisBlock = new Block();
-      genesisBlock.setIndex(0);
-      genesisBlock.setNonce(100000);
-      genesisBlock.setParentHash("parent_hash".getBytes());
-      genesisBlock.setTimestamp(System.currentTimeMillis());
-      return genesisBlock;
+        Block genesisBlock = new Block();
+        genesisBlock.setIndex(0);
+        genesisBlock.setNonce(100000);
+        genesisBlock.setParentHash("parent_hash".getBytes());
+        genesisBlock.setTimestamp(System.currentTimeMillis());
+
+        GenesisTransaction transaction = new GenesisTransaction();
+
+        Map<byte[], Long> genesisAccount = new HashMap<>();
+        for (int i = 0; i < 10; i++) {
+            genesisAccount.put(("user" + 1).getBytes(), 10000000000L);
+        }
+        transaction.setGenesisAccounts(genesisAccount);
+
+        genesisBlock.addTransaction(transaction);
+
+        return genesisBlock;
     }
 }

@@ -1,5 +1,7 @@
 package io.ashu.core.model;
 
+import com.alibaba.fastjson.JSON;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,4 +24,19 @@ public class Account {
         ", balance=" + balance +
         '}';
   }
+
+  public static Account deseriallize(byte[] data) {
+    try {
+      return JSON.parseObject(new String(data, "UTF-8"), Account.class);
+    } catch (UnsupportedEncodingException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  public byte[] seriallize() {
+    String json = JSON.toJSONString(this);
+    return json.getBytes();
+  }
+
 }

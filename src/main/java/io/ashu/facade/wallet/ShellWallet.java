@@ -60,13 +60,18 @@ class TransactionCommands {
 
   @ShellMethod("send-coin receiver amount")
   public void sendCoin(String toAddrss, long amount) {
-
   }
 
   @ShellMethod("queryAccount <id>")
   public void queryAccount(String id) {
-    Account account = wallet.queryAccount(Hex.decode(id));
-    console.write(account.toString());
+//    Account account = wallet.queryAccount(Hex.decode(id));
+    Account account = wallet.queryAccount(id.getBytes());
+    if (account == null) {
+      console.write("No this account");
+    } else {
+      console.write(account.toString());
+    }
+
   }
 
 
