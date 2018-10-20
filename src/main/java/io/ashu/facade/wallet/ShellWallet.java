@@ -1,6 +1,8 @@
 package io.ashu.facade.wallet;
 
+import io.ashu.core.model.AbstractTransaction;
 import io.ashu.core.model.Account;
+import io.ashu.core.model.transaction.TransferTransaction;
 import java.io.PrintStream;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,16 +57,16 @@ class TransactionCommands {
   public void importWallet(String priKey) {
     setPrivateKey(Hex.decode(priKey));
     setLogin(true);
-    console.write("Import wallet success");
+    console.write("Import wallet successfully");
   }
 
-  @ShellMethod("send-coin receiver amount")
+  @ShellMethod("send-coin receiver_address amount")
   public void sendCoin(String toAddrss, long amount) {
+    AbstractTransaction trx = new TransferTransaction();
   }
 
   @ShellMethod("queryAccount <id>")
   public void queryAccount(String id) {
-//    Account account = wallet.queryAccount(Hex.decode(id));
     Account account = wallet.queryAccount(id.getBytes());
     if (account == null) {
       console.write("No this account");
