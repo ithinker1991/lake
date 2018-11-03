@@ -15,11 +15,11 @@ public class ECKey {
   public PrivateKey privateKey;
   public PublicKey publicKey;
 
-  public static ECKey generateECKey() throws Exception {
+  public static ECKey newECKey() throws Exception {
     return new ECKey();
   }
 
-  public static ECKey parseFromPrivKey(byte[] privateKey) throws Exception {
+  public static ECKey fromPrivKey(byte[] privateKey) throws Exception {
     return new ECKey();
   }
 
