@@ -6,6 +6,7 @@ import io.ashu.db.store.BlockStore;
 import io.ashu.db.store.ChainStatsStore;
 import io.ashu.db.store.impl.SimpleBlockStore;
 import io.ashu.db.store.impl.SimpleChainStatsStore;
+import io.ashu.exception.BlockException;
 import java.io.Serializable;
 import lombok.Getter;
 
@@ -68,7 +69,9 @@ public class BlockChain implements Serializable {
   }
 
   private void vailditeBlock(Block block) {
-
+    if (block.getIndex() != statsStore.getHeadBlockIndex() + 1) {
+      throw BlockException.validationError("Block index should more than current head index");
+    }
   }
 
   private void applyBlock(Block block) {

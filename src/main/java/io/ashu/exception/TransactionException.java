@@ -1,8 +1,9 @@
 package io.ashu.exception;
 
 
-public class TransactionException extends RuntimeException {
-  public TransactionException(String msg) {
+public class TransactionException extends LakeException {
+
+  private TransactionException(String msg) {
     super(msg);
   }
 

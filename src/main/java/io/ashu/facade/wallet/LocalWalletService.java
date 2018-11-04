@@ -11,19 +11,19 @@ import java.util.concurrent.Future;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WalletService implements Wallet {
+public class LocalWalletService implements Wallet {
 
   private AccountStore accountStore = SimpleAccountStore.getInstance();
   private BlockChain blockChain;
 
 
-  public WalletService() {
+  public LocalWalletService() {
     this.blockChain = BlockChain.getInstance();
   }
 
   @Override
-  public boolean submitTransaction(Transaction trx) {
-    this.blockChain.pushTransaction(trx);
+  public boolean submitTransaction(Transaction tx) {
+    this.blockChain.pushTransaction(tx);
     return true;
   }
 

@@ -40,7 +40,7 @@ class ConsoleService {
 
 @ShellComponent
 class TransactionCommands {
-  private final WalletService wallet;
+  private final LocalWalletService wallet;
   private final ConsoleService console;
 
   @Getter
@@ -56,7 +56,7 @@ class TransactionCommands {
   @Getter
   ECKey ecKey;
 
-  public TransactionCommands(WalletService wallet, ConsoleService console) {
+  public TransactionCommands(LocalWalletService wallet, ConsoleService console) {
     this.wallet = wallet;
     this.console = console;
   }
