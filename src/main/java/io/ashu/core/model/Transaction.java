@@ -2,17 +2,18 @@ package io.ashu.core.model;
 
 import com.alibaba.fastjson.JSON;
 import io.ashu.db.store.AccountStore;
+import io.ashu.db.store.impl.SimpleAccountStore;
+import io.ashu.db.store.impl.SimpleBlockStore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class AbstractTransaction {
+public abstract class Transaction {
     public static enum Type {
         TRANSFER,
     }
 
-    @Autowired
-    private AccountStore accountStore;
+    private AccountStore accountStore = SimpleAccountStore.getInstance();
 
     @Getter
     private byte[] ownerAddress;
@@ -27,12 +28,9 @@ public abstract class AbstractTransaction {
     private byte[] data;
     private byte[] signature;
 
-    public AbstractTransaction(byte[] ownerAddress) {
+    public Transaction(byte[] ownerAddress) {
         this.ownerAddress = ownerAddress;
-    }
-
-    public AbstractTransaction() {
-//        owner = accountStore.getAccount(ownerAddress);
+        owner = accountStore.getAccount(ownerAddress);
     }
 
     public byte[] serialize() {

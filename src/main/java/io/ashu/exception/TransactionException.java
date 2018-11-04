@@ -1,6 +1,5 @@
 package io.ashu.exception;
 
-import org.ethereum.solidity.compiler.ContractException;
 
 public class TransactionException extends RuntimeException {
   public TransactionException(String msg) {

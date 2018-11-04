@@ -11,7 +11,7 @@ import org.springframework.boot.SpringApplication;
 @Slf4j
 public class FullNode {
   public static void main(String[] args) throws InterruptedException {
-    BlockChain blockChain = new BlockChain(Block.getGenesisBlock());
+    BlockChain blockChain = BlockChain.getInstance();
     GenerateBlockService generateBlockService = new PowGenerateBlockService(blockChain);
     generateBlockService.start();
 

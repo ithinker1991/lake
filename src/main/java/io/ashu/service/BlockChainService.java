@@ -24,7 +24,7 @@ public class BlockChainService  implements  IService{
 
   @Override
   public void start() {
-    log.error("Generage Block !!!");
+    log.error("Generate Block !!!");
     new Thread(() -> {
       while(!shouldExit) {
 

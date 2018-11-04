@@ -1,6 +1,6 @@
 package io.ashu.wallet;
 
-import io.ashu.core.model.AbstractTransaction;
+import io.ashu.core.model.Transaction;
 import io.ashu.core.model.Account;
 import io.ashu.facade.Lake;
 import java.util.concurrent.Future;
@@ -13,12 +13,12 @@ public class LocalWallet implements Wallet {
   }
 
   @Override
-  public boolean submitTransaction(AbstractTransaction transaction) {
+  public boolean submitTransaction(Transaction transaction) {
     return false;
   }
 
   @Override
-  public Future<TransactionResult> callTransaction(AbstractTransaction trx) {
+  public Future<TransactionResult> callTransaction(Transaction trx) {
     return null;
   }
 

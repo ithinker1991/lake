@@ -1,5 +1,7 @@
 package io.ashu.core.model;
 
+import static io.ashu.core.model.Block.getGenesisBlock;
+
 import io.ashu.db.store.BlockStore;
 import io.ashu.db.store.ChainStatsStore;
 import io.ashu.db.store.impl.SimpleBlockStore;
@@ -18,11 +20,26 @@ public class BlockChain implements Serializable {
   private Block genesisBlock;
   private BlockStore blockStore;
   private ChainStatsStore statsStore;
+
+  private static BlockChain blockChain;
+  static {
+    try {
+      blockChain = new BlockChain(getGenesisBlock());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public static BlockChain getInstance() {
+    return blockChain;
+  }
+
+
   @Getter
-  private List<AbstractTransaction> pendingTransactions;
+  private List<Transaction> pendingTransactions;
   private long headIndex = -1;
 
-  public BlockChain(Block genesisBlock) {
+  private BlockChain(Block genesisBlock) {
     blockStore = new SimpleBlockStore();
     statsStore = new SimpleChainStatsStore();
     pendingTransactions = new LinkedList<>();
@@ -39,6 +56,10 @@ public class BlockChain implements Serializable {
 
   public long getSize() {
     return statsStore.getHeadBlockIndex();
+  }
+
+  public synchronized void pushTransaction(Transaction tx) {
+    pendingTransactions.add(tx);
   }
 
   public synchronized void pushBlock(Block block) {
