@@ -18,3 +18,5 @@ db
 out/
 db/
 test/
+tmp/
+temp/
