@@ -1,6 +1,9 @@
 package io.ashu.facade.wallet;
 
+import io.ashu.core.model.Transaction;
 import io.ashu.core.model.Account;
+import io.ashu.core.model.transaction.TransferTransaction;
+import io.ashu.crypto.ECKey;
 import java.io.PrintStream;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,8 +46,15 @@ class TransactionCommands {
   @Getter
   @Setter
   private byte[] privateKey;
+
+
+  private byte[] ownerAddress;
   @Setter
   private boolean login;
+
+  @Setter
+  @Getter
+  ECKey ecKey;
 
   public TransactionCommands(WalletService wallet, ConsoleService console) {
     this.wallet = wallet;
@@ -53,24 +63,42 @@ class TransactionCommands {
 
   @ShellMethod("import-wallet privateKey")
   public void importWallet(String priKey) {
-    setPrivateKey(Hex.decode(priKey));
+    try {
+      this.ecKey = ECKey.fromprivateKey(Hex.decode(priKey));
+    } catch (Exception e) {
+      console.write("Import wallet failed");
+    }
     setLogin(true);
-    console.write("Import wallet success");
+    console.write("Import wallet successfully");
   }
 
-  @ShellMethod("send-coin receiver amount")
-  public void sendCoin(String toAddrss, long amount) {
+  @ShellMethod("get-address")
+  public void getAddress() {
+    if (this.login) {
+      console.write("Your account address:" + Hex.toHexString(this.ecKey.getAddress()));
+    } else {
+      console.write("Please login first");
+    }
   }
 
-  @ShellMethod("queryAccount <id>")
-  public void queryAccount(String id) {
-//    Account account = wallet.queryAccount(Hex.decode(id));
-    Account account = wallet.queryAccount(id.getBytes());
+  @ShellMethod("transfer receiver_address amount")
+  public void transfer(String toAddrss, long amount) {
+    Transaction trx = new TransferTransaction(ecKey.getAddress(), Hex.decode(toAddrss), amount);
+    wallet.submitTransaction(trx);
+  }
+
+  @ShellMethod("query-account <address>")
+  public void queryAccount(String hexAddress) {
+    Account account = wallet.queryAccount(Hex.decode(hexAddress));
     if (account == null) {
       console.write("No this account");
     } else {
       console.write(account.toString());
     }
+  }
+
+  @ShellMethod("list-account <address>")
+  public void ListAccounts() {
 
   }
 
@@ -86,9 +114,9 @@ class TransactionCommands {
 //    this.wallet = wallet;
 //    this.console = console;
 //  }
-//  @ShellMethod("queryAccount <id>")
-//  public void queryAccount(String id) {
-//    Account account = wallet.queryAccount(Hex.decode(id));
+//  @ShellMethod("queryAccount <address>")
+//  public void queryAccount(String address) {
+//    Account account = wallet.queryAccount(Hex.decode(address));
 //    console.write(account.toString());
 //  }
 

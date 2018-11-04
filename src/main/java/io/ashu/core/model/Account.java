@@ -2,7 +2,6 @@ package io.ashu.core.model;
 
 import com.alibaba.fastjson.JSON;
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,14 +11,14 @@ import org.spongycastle.util.encoders.Hex;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Account {
-  private byte[] id;
+  private byte[] address;
   private String name;
   private long balance;
 
   @Override
   public String toString() {
     return "Account{" +
-        "id=" + Hex.toHexString(id) +
+        "address=" + Hex.toHexString(address) +
         ", name='" + name + '\'' +
         ", balance=" + balance +
         '}';

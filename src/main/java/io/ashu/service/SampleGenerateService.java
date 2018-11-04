@@ -23,8 +23,6 @@ public class SampleGenerateService extends AbstractGenerateBlockService {
         return block;
     }
 
-
-
     @Override
     public boolean canGenerate() {
         return false;

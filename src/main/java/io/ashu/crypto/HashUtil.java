@@ -1,5 +1,7 @@
 package io.ashu.crypto;
 
+import static java.util.Arrays.copyOfRange;
+
 import org.spongycastle.jcajce.provider.digest.SHA3;
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
@@ -13,6 +15,11 @@ public class HashUtil {
     public static byte[] sha3(byte[] input) {
         SHA3.DigestSHA3 digestSHA3 = new SHA3.Digest256();
         return digestSHA3.digest(input);
+    }
+
+    public static byte[] sha3omit12(byte[] input) {
+        byte[] hash = sha3(input);
+        return copyOfRange(hash, 12, hash.length);
     }
 //    private static final Provider CRYPTO_PROVIDER;
 //

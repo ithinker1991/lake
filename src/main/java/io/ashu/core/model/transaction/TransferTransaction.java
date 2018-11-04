@@ -1,36 +1,39 @@
 package io.ashu.core.model.transaction;
 
-import io.ashu.core.model.AbstractTransaction;
+import io.ashu.core.model.Transaction;
 import io.ashu.core.model.Account;
 import io.ashu.db.store.AccountStore;
+import io.ashu.db.store.impl.SimpleAccountStore;
+import io.ashu.exception.TransactionException;
 import org.spongycastle.util.encoders.Hex;
-import org.springframework.beans.factory.annotation.Autowired;
 
-public class TransferTransaction extends AbstractTransaction {
+public class TransferTransaction extends Transaction {
+
+  private AccountStore accountStore = SimpleAccountStore.getInstance();
 
   private byte[] toAddress;
   private long amount;
 
-  @Autowired
-  private AccountStore accountStore;
-
   private Account receiver;
 
-  public TransferTransaction() {
-    receiver = accountStore.getAccount(toAddress);
+  public TransferTransaction(byte[] ownerAddress, byte[] toAddress, long amount) {
+    super(ownerAddress);
+    this.toAddress = toAddress;
+    receiver = accountStore.getAccount(this.toAddress);
+    this.amount = amount;
   }
 
   @Override
   public void validate() {
 
     if(this.getOwner() == null) {
-      throw new RuntimeException("Send doesn't exist");
+      throw TransactionException.validationError("sender doesn't exist");
     }
 
     long senderBalance = accountStore.getBalance(this.getOwnerAddress());
 
-    if (amount < senderBalance) {
-      throw new RuntimeException("Balance of sender should more than amount");
+    if (amount > senderBalance) {
+      throw TransactionException.validationError("balance of sender should more than amount");
     }
   }
 
@@ -48,9 +51,6 @@ public class TransferTransaction extends AbstractTransaction {
     accountStore.putAccount(this.getOwnerAddress(), this.getOwner());
   }
 
-  public TransferTransaction(byte[] data) {
-    super();
-  }
 
   @Override
   public String toString() {
