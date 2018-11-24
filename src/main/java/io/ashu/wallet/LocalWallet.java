@@ -8,8 +8,6 @@ import java.util.concurrent.Future;
 public class LocalWallet implements Wallet {
 
   public LocalWallet(Lake Lake) {
-
-
   }
 
   @Override
